@@ -67,7 +67,10 @@ function Invoke-SSHWireshark {
         [string]$UserName,
 
         [parameter(Mandatory = $true)]
-        [string]$Command
+        [string]$Command,
+
+        [parameter(Mandatory = $false)]
+        [string]$Stdin = $null
     )
 
     try {
@@ -77,6 +80,7 @@ function Invoke-SSHWireshark {
         $Plink_Process.StartInfo.UseShellExecute = $false
         $Plink_Process.StartInfo.FileName = Get-PlinkExePath
         $Plink_Process.StartInfo.RedirectStandardOutput = $true
+        $Plink_Process.StartInfo.RedirectStandardInput = $true
         $Plink_Process.StartInfo.RedirectStandardError = $true
         $Plink_Process.StartInfo.Arguments = "-v -batch -ssh $(_Quote $ComputerName)"
         
@@ -104,6 +108,7 @@ function Invoke-SSHWireshark {
             throw 'Error starting wireshark'
         }
 
+        $PlinkIn = $Plink_Process.StandardInput
         $PlinkOutStream = $Plink_Process.StandardOutput.BaseStream
         $PlinkErrorStreamReader = $Plink_Process.StandardError
         $WiresharkInStream = $Wireshark_Process.StandardInput.BaseStream
@@ -117,6 +122,10 @@ function Invoke-SSHWireshark {
 
         $PlinkStderrReadTask = $null
         $PlinkStderrReading = $true
+
+        if ($Stdin) {
+            $PlinkIn.Write($Stdin)
+        }
 
         do {
             Write-Progress -Activity $Activity -Status "Captured $TotalBytes bytes"
