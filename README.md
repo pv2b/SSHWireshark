@@ -14,6 +14,18 @@ For specific options, read the fine source code. :-)
 
 Downlad the code and unzip into C:\Users\\\<YourUserName\>\\Documents\WindowsPowerShell\Modules\SSHWireshark
 
+# Depencencies
+
+## Required
+
+- Powershell on Windows
+- Wireshark
+- Plink (part of PuTTY)
+
+## Optional
+
+- PowerCLI (for vSphere support)
+
 # Usage
 
 See examples below:
