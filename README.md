@@ -45,6 +45,7 @@ For example:
 mirror session 1
     destination cpu
     source interface lag2 both
+    enable
 ```Then you can do:```powershell$c = Get-Credential
 Invoke-ArubaOSCXSSHWireshark -Credential $c -ComputerName 192.0.2.129 -Expression icmp
 ```
