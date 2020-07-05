@@ -7,6 +7,8 @@ Currently supports the following over SSH:
 - VMware vSphere (pktcap-uw, requires PowerCli)
 - generic (create your own command line)
 
+For specific options, read the fine source code. :-)
+
 # Usage
 
 See examples below:
@@ -24,5 +26,5 @@ Invoke-TcpdumpSSHWireshark -ComputerName 10.0.10.1 -Credential $c -Interface em0
 ```powershell
 Connect-VIServer vcenter.example.com
 $VMHostSSHCredential = Get-Credential
-Get-VM my-virtual-machine | Get-NetworkAdapter | Invoke-VsphereSSHWireshark -Credential $VMHostSSHCredential -Direction Both
+Get-VM my-virtual-machine | Get-NetworkAdapter | Invoke-VsphereSSHWireshark -Credential $VMHostSSHCredential
 ```
