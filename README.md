@@ -6,6 +6,7 @@ Currently supports the following over SSH:
 - tcpdump
 - VMware vSphere (pktcap-uw, requires PowerCli)
 - generic (create your own command line)
+- ArubaOS-CX
 
 For specific options, read the fine source code. :-)
 
