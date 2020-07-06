@@ -76,23 +76,24 @@ function Invoke-SSHWireshark {
     try {
         $Activity = "Capturing packets over SSH. Press Ctrl+C to stop."
 
+        $PlinkArguments = "-v -batch -ssh $(_Quote $ComputerName)"
+        switch ($PSCmdlet.ParameterSetName) {
+            'KeyAuth' {
+                $PlinkArguments += " -l $(_Quote $UserName)"
+            }
+            'PasswordAuth' {
+                $PlinkArguments.StartInfo.Arguments += " -l $(_Quote $Credential.UserName) -pw $(_Quote $Credential.Password)"
+            }
+        }
+        $PlinkArguments += " $(_Quote $Command)"
+
         $Plink_Process = New-Object -TypeName System.Diagnostics.Process
         $Plink_Process.StartInfo.UseShellExecute = $false
         $Plink_Process.StartInfo.FileName = Get-PlinkExePath
         $Plink_Process.StartInfo.RedirectStandardOutput = $true
         $Plink_Process.StartInfo.RedirectStandardInput = $true
         $Plink_Process.StartInfo.RedirectStandardError = $true
-        $Plink_Process.StartInfo.Arguments = "-v -batch -ssh $(_Quote $ComputerName)"
-        
-        switch ($PSCmdlet.ParameterSetName) {
-            'KeyAuth' {
-                $Plink_Process.StartInfo.Arguments += " -l $(_Quote $UserName)"
-            }
-            'PasswordAuth' {
-                $Plink_Process.StartInfo.Arguments += " -l $(_Quote $Credential.UserName) -pw $(_Quote $Credential.Password)"
-            }
-        }
-        $Plink_Process.StartInfo.Arguments += " $(_Quote $Command)"
+        $Plink_Process.StartInfo.Arguments = $PlinkArguments
 
         $Wireshark_Process = New-Object -TypeName System.Diagnostics.Process
         $Wireshark_Process.StartInfo.UseShellExecute = $false
