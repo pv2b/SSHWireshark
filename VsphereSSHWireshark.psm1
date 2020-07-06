@@ -24,7 +24,7 @@ function Invoke-VsphereSSHWireshark {
         [System.Net.NetworkCredential]$Credential,
 
         [parameter(ParameterSetName='KeyAuth', Mandatory = $false)]
-        [string]$UserName,
+        [string]$UserName = 'root',
 
         [parameter(Mandatory = $false)]
         [switch]$Uplink = $false,
@@ -129,6 +129,9 @@ function Invoke-VsphereSSHWireshark {
 
         $PktcapUWCommand += " -o -"
 
+        # Do not refactor this to use _GetCommonSSHParameters, since this cmdlet determines
+        # ComputerName etc from the vCenter server. (Ideally we'd like to somehow authenticate
+        # without requiring host creds...)
         $AuthParams = @{}
         switch ($PSCmdlet.ParameterSetName) {
             'KeyAuth' {
