@@ -1,4 +1,4 @@
-﻿Import-Module $PSScriptRoot\CommonSSHParameters.psm1
+Import-Module $PSScriptRoot\CommonSSHParameters.psm1
 
 function Invoke-TcpdumpSSHWireshark {
     [cmdletbinding()]
@@ -7,7 +7,7 @@ function Invoke-TcpdumpSSHWireshark {
         [string]$Interface,
 
         [parameter(Mandatory = $false)]
-        [string]$Expression
+        [string]$Expression,
 
         [parameter(Mandatory = $false)]
         [switch]$MonitorMode
@@ -35,7 +35,7 @@ function Invoke-TcpdumpSSHWireshark {
 
         # Monitor mode (useful for wireless)
         if ($MonitorMode) {
-            $Options += 'I'
+            $Command += 'I'
         }
 
         # -i to choose interface
