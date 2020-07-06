@@ -36,6 +36,17 @@ function _AddCommonSSHParameters {
     )
     $paramDictionary.Add($parameter.Name, $parameter)
 
+    $parameter = [System.Management.Automation.RuntimeDefinedParameter]::new(
+        'Port',
+        [uint16],
+        [Attribute[]]@(
+            [Parameter]@{
+                Mandatory = $false
+            }
+        )
+    )
+    $paramDictionary.Add($parameter.Name, $parameter)
+
     return $paramDictionary
 }
 

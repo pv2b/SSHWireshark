@@ -60,6 +60,9 @@ function Invoke-SSHWireshark {
         [parameter(Mandatory = $true)]
         [string]$ComputerName,
 
+        [parameter(Mandatory = $false)]
+        [uint16]$Port,
+
         [parameter(ParameterSetName='PasswordAuth', Mandatory = $true)]
         [System.Net.NetworkCredential]$Credential = $null,
 
@@ -84,6 +87,9 @@ function Invoke-SSHWireshark {
             'PasswordAuth' {
                 $PlinkArguments += " -l $(_Quote $Credential.UserName) -pw $(_Quote $Credential.Password)"
             }
+        }
+        if ($PSBoundParameters.ContainsKey('Port')) {
+            $PlinkArguments += " -P $Port"
         }
         $PlinkArguments += " $(_Quote $Command)"
 
