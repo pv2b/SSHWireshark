@@ -8,6 +8,9 @@ function Invoke-TcpdumpSSHWireshark {
 
         [parameter(Mandatory = $false)]
         [string]$Expression
+
+        [parameter(Mandatory = $false)]
+        [switch]$MonitorMode
     )
 
     Dynamicparam {
@@ -16,6 +19,8 @@ function Invoke-TcpdumpSSHWireshark {
     
     Process {
         # TODO Add escaping...
+
+        $Command = "tcpdump"
 
         # --immediate-mode
         #      Capture  in  "immediate mode".  In this mode, packets are deliv-
@@ -26,9 +31,16 @@ function Invoke-TcpdumpSSHWireshark {
         #      pipe.
         # -U for unbuffered output from tcpdump
         # -n to disable name resolution
+        $Command += ' --immediate-mode -Un'
+
+        # Monitor mode (useful for wireless)
+        if ($MonitorMode) {
+            $Options += 'I'
+        }
+
         # -i to choose interface
         # -w - to write to stdout
-        $Command = "tcpdump --immediate-mode -Un -i $Interface -w - $Expression"
+        $Command += " -i $Interface -w - $Expression"
 
         $CommonSSHParameters = _GetCommonSSHParameters -CallerPSBoundParameters $PSBoundParameters
         Invoke-SSHWireshark -Command $Command @CommonSSHParameters
