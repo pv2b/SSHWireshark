@@ -13,7 +13,7 @@ function Invoke-ArubaOSCXSSHWireshark {
     
     Process {
         $Command = "start-shell"
-        $Stdin = "sudo ip netns exec mirror_ns tcpdump -Un -i MirrorRxNet -w - $Expression`r`n"
+        $Stdin = "sudo ip netns exec mirror_ns tcpdump --immediate-mode -Un -i MirrorRxNet -w - $Expression`r`n"
 
         $CommonSSHParameters = _GetCommonSSHParameters -CallerPSBoundParameters $PSBoundParameters
         Invoke-SSHWireshark -Command $Command -Stdin $Stdin @CommonSSHParameters
