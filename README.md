@@ -6,8 +6,25 @@ Currently supports the following over SSH:
 - tcpdump
 - VMware vSphere (pktcap-uw, requires PowerCli)
 - generic (create your own command line)
+- ArubaOS-CX
 
 For specific options, read the fine source code. :-)
+
+# Install instructions
+
+Downlad the code and unzip into C:\Users\\\<YourUserName\>\\Documents\WindowsPowerShell\Modules\SSHWireshark
+
+# Depencencies
+
+## Required
+
+- Powershell on Windows
+- Wireshark
+- Plink (part of PuTTY)
+
+## Optional
+
+- PowerCLI (for vSphere support)
 
 # Usage
 
@@ -46,6 +63,11 @@ mirror session 1
     destination cpu
     source interface lag2 both
     enable
-```Then you can do:```powershell$c = Get-Credential
+```
+
+Then you can do:
+
+```powershell
+$c = Get-Credential
 Invoke-ArubaOSCXSSHWireshark -Credential $c -ComputerName 192.0.2.129 -Expression icmp
 ```
