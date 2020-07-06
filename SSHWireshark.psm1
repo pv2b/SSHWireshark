@@ -82,24 +82,30 @@ function Invoke-SSHWireshark {
                 $PlinkArguments += " -l $(_Quote $UserName)"
             }
             'PasswordAuth' {
-                $PlinkArguments.StartInfo.Arguments += " -l $(_Quote $Credential.UserName) -pw $(_Quote $Credential.Password)"
+                $PlinkArguments += " -l $(_Quote $Credential.UserName) -pw $(_Quote $Credential.Password)"
             }
         }
         $PlinkArguments += " $(_Quote $Command)"
 
-        $Plink_Process = New-Object -TypeName System.Diagnostics.Process
-        $Plink_Process.StartInfo.UseShellExecute = $false
-        $Plink_Process.StartInfo.FileName = Get-PlinkExePath
-        $Plink_Process.StartInfo.RedirectStandardOutput = $true
-        $Plink_Process.StartInfo.RedirectStandardInput = $true
-        $Plink_Process.StartInfo.RedirectStandardError = $true
-        $Plink_Process.StartInfo.Arguments = $PlinkArguments
+        $Plink_Process = [System.Diagnostics.Process]@{
+            StartInfo = [System.Diagnostics.ProcessStartInfo]@{
+                UseShellExecute        = $false
+                FileName               = Get-PlinkExePath
+                RedirectStandardOutput = $true
+                RedirectStandardInput  = $true
+                RedirectStandardError  = $true
+                Arguments              = $PlinkArguments
+            }
+        }
 
-        $Wireshark_Process = New-Object -TypeName System.Diagnostics.Process
-        $Wireshark_Process.StartInfo.UseShellExecute = $false
-        $Wireshark_Process.StartInfo.FileName = Get-WiresharkExePath
-        $Wireshark_Process.StartInfo.RedirectStandardInput = $true
-        $Wireshark_Process.StartInfo.Arguments = '-k -i -'
+        $Wireshark_Process = [System.Diagnostics.Process]@{
+            StartInfo = [System.Diagnostics.ProcessStartInfo]@{
+                UseShellExecute       = $false
+                FileName              = Get-WiresharkExePath
+                RedirectStandardInput = $true
+                Arguments             = '-k -i -'
+            }
+        }
 
         if (-not $Plink_Process.Start()) {
             throw 'Error starting plink'
