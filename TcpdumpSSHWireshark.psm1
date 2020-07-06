@@ -39,7 +39,6 @@
                 }
             }
         }
-        $Command
         Invoke-SSHWireshark -ComputerName $ComputerName -Command $Command @AuthParams
     }
 }
